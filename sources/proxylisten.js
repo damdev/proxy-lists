@@ -21,7 +21,6 @@ module.exports = {
 		options || (options = {});
 
 		var emitter = new EventEmitter();
-
 		var getProxiesFromList = async.seq(
 			this.getListHtml,
 			this.parseListHtml
@@ -47,22 +46,28 @@ module.exports = {
 			// Additional filter parameters.
 			var filters = {};
 
-			if (_.contains(options.protocols, 'http')) {
+
+			if (!options.protocols) {
 				types.push('http');
-			}
-
-			if (_.contains(options.protocols, 'https')) {
 				types.push('https');
+				types.push('socks');
+			} else {
+				if (_.contains(options.protocols, 'http')) {
+					types.push('http');
+				}
+				if (_.contains(options.protocols, 'https')) {
+					types.push('https');
+				}
+				if (_.contains(options.protocols, 'socks4') || _.contains(options.protocols, 'socks5')) {
+					types.push('socks');
+				}
 			}
 
-			if (_.contains(options.protocols, 'socks4') || _.contains(options.protocols, 'socks5')) {
-				types.push('socks');
-			}
 
 			var anonymityLevelToFilterValue = _.invert(anonymityLevelFixes);
 
 			_.each(types, function(type) {
-				_.each(options.anonymityLevels, function(anonymityLevel) {
+				_.each(options.anonymityLevels?options.anonymityLevels: ['elite', 'anonymous', 'transparent'], function(anonymityLevel) {
 					lists.push({
 						type: type,
 						anonymityLevel: anonymityLevelToFilterValue[anonymityLevel]
@@ -209,7 +214,6 @@ module.exports = {
 	},
 
 	getListHtml: function(type, numPerPage, hiddenField, filters, cb) {
-
 		var requestOptions = {
 			method: 'POST',
 			url: 'http://www.proxy-listen.de/Proxy/Proxyliste.html',
@@ -229,7 +233,6 @@ module.exports = {
 		requestOptions.form[hiddenField.name] = hiddenField.value;
 
 		request(requestOptions, function(error, response, data) {
-
 			if (error) {
 				return cb(error);
 			}
@@ -252,7 +255,6 @@ module.exports = {
 
 			var proxies = [];
 			var $ = cheerio.load(listHtml);
-
 			$('table.proxyList tr').each(function(index, tr) {
 
 				if (!index) {
