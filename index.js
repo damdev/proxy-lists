@@ -288,12 +288,12 @@ var ProxyLists = module.exports = {
 
 		if (_.isNull(options.protocols)) {
 			// Use all protocols.
-			options.protocols = _.values(this._protocols);
+			//options.protocols = _.values(this._protocols);
 		}
 
 		if (_.isNull(options.anonymityLevels)) {
 			// Use all anonymity levels.
-			options.anonymityLevels = _.values(this._anonymityLevels);
+			//options.anonymityLevels = _.values(this._anonymityLevels);
 		}
 
 		if (!_.isArray(options.countries) && !_.isObject(options.countries)) {
@@ -301,11 +301,11 @@ var ProxyLists = module.exports = {
 		}
 
 		if (!_.isArray(options.protocols)) {
-			throw new Error('Invalid option "protocols": Array expected.');
+			//throw new Error('Invalid option "protocols": Array expected.');
 		}
 
 		if (!_.isArray(options.anonymityLevels)) {
-			throw new Error('Invalid option "anonymityLevels": Array expected.');
+			//throw new Error('Invalid option "anonymityLevels": Array expected.');
 		}
 
 		if (options.countries && _.isArray(options.countries)) {
@@ -347,12 +347,12 @@ var ProxyLists = module.exports = {
 
 	isValidProxyProtocol: function(protocol) {
 
-		return _.contains(this._protocols, protocol);
+		return _.contains(this._protocols, protocol) || _.isNull(protocol);
 	},
 
 	isValidAnonymityLevel: function(anonymityLevel) {
 
-		return _.isString(anonymityLevel) && _.contains(this._anonymityLevels, anonymityLevel);
+		return (_.isString(anonymityLevel) && _.contains(this._anonymityLevels, anonymityLevel) || _.isNull(anonymityLevel));
 	},
 
 	isValidIpAddress: function(ipAddress) {
