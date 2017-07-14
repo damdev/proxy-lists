@@ -68,21 +68,21 @@ module.exports = {
 
 		var startingPages = [];
 
-		if (_.contains(options.protocols, 'socks5')) {
+		if ((!options.protocols) || _.contains(options.protocols, 'socks5')) {
 			startingPages.push({
 				protocols: ['socks5'],
 				url: 'http://vip-socks24.blogspot.com/'
 			});
 		}
 
-		if (_.contains(options.protocols, 'http')) {
+		if ((!options.protocols) || _.contains(options.protocols, 'http')) {
 			startingPages.push({
 				protocols: ['http'],
 				url: 'http://proxyserverlist-24.blogspot.com/'
 			});
 		}
 
-		if (_.contains(options.protocols, 'https')) {
+		if ((!options.protocols) || _.contains(options.protocols, 'https')) {
 			startingPages.push({
 				protocols: ['https'],
 				url: 'http://sslproxies24.blogspot.com/'
@@ -105,7 +105,6 @@ module.exports = {
 	},
 
 	getStartingPageHtml: function(startingPage, cb) {
-
 		request({
 			method: 'GET',
 			url: startingPage.url
