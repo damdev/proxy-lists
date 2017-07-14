@@ -17,8 +17,7 @@ module.exports = {
 		var emitter = new EventEmitter();
 
 		// This proxy source only has socks proxies.
-		if (_.contains(options.protocols, 'socks4') || _.contains(options.protocols, 'socks5')) {
-
+		if ((!options.protocols) || (_.contains(options.protocols, 'socks4') || _.contains(options.protocols, 'socks5'))) {
 			var basePageUrl = 'http://sockslist.net/proxy/server-socks-hide-ip-address/{page}';
 
 			var getProxiesFromPage = async.seq(
